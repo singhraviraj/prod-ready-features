@@ -1,12 +1,9 @@
 package com.prod_ready_features.prod_ready_features.entity;
 
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -15,20 +12,21 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "posts")
-@AllArgsConstructor
-@NoArgsConstructor
+@MappedSuperclass
 @Getter
 @Setter
-public class PostEntity extends AuditingEntity{
+@EntityListeners(AuditingEntityListener.class)
+public class AuditingEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @CreatedDate
+    private LocalDateTime creationTime;
 
-    private String title;
+    @LastModifiedDate
+    private LocalDateTime updateTime;
 
-    private String description;
+    @CreatedBy
+    private String createdBy;
 
+    @LastModifiedBy
+    private String modifiedBy;
 }
